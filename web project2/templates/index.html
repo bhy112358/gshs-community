@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}큰들 커뮤니티 | GSHS{% endblock %}
+
+{% block content %}
+
+{% if not logged_in %}
+<section class="hero">
+    <div class="hero-card">
+        <div class="hero-text">
+            <p class="hero-badge">경남과학고등학교 · GSHS · 큰들</p>
+            <h1>큰들 커뮤니티</h1>
+            <p class="hero-desc">
+                경남과학고등학교 학생들이 서로의 생각과 일상을 나누고,
+                질문하고, 답하고, 함께 소통하는 공간입니다.
+                학교 생활 이야기부터 공부 고민, 공지, 자유로운 대화까지
+                큰들만의 커뮤니티를 만들어 가 보세요.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="{{ url_for('register') }}" class="primary-btn">지금 시작하기</a>
+                <a href="{{ url_for('login') }}" class="secondary-btn">로그인</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="info-grid">
+    <div class="info-card">
+        <h3>큰들 커뮤니티란?</h3>
+        <p>
+            이곳은 경남과학고등학교 학생들을 위한 커뮤니티입니다.
+            단순한 SNS보다, 서로에게 도움이 되는 이야기와 질문,
+            학교 안의 다양한 생각을 나누는 공간을 목표로 합니다.
+        </p>
+    </div>
+
+    <div class="info-card">
+        <h3>무엇을 할 수 있나요?</h3>
+        <p>
+            자유롭게 글을 올리고, 친구들과 소통하고,
+            익명 질문을 보내고 답변할 수 있습니다.
+            공지나 생활 팁, 공부 이야기 같은 내용도 함께 나눌 수 있어요.
+        </p>
+    </div>
+
+    <div class="info-card">
+        <h3>왜 로그인해야 하나요?</h3>
+        <p>
+            로그인 후에는 게시글 작성, 댓글, 좋아요,
+            질문 보내기, 메시지, 프로필 관리 같은
+            커뮤니티의 핵심 기능을 사용할 수 있습니다.
+        </p>
+    </div>
+</section>
+
+<section class="preview-section">
+    <div class="section-title-row">
+        <h2>최근 공개 글</h2>
+        <span>로그인 없이도 둘러볼 수 있어요</span>
+    </div>
+
+    {% if recent_posts %}
+        {% for post in recent_posts %}
+        <div class="feed-card preview-card">
+            <div class="feed-header">
+                <div>
+                    <strong>{{ post.author.username }}</strong>
+                    <p>{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                </div>
+            </div>
+            <div class="feed-body">
+                <p>{{ post.content }}</p>
+            </div>
+            <div class="feed-footer">
+                <span>좋아요 {{ post.likes|length }}</span>
+                <span>댓글 {{ post.comments|length }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-card">
+            <p>아직 공개된 게시글이 없습니다.</p>
+        </div>
+    {% endif %}
+</section>
+
+<section class="preview-section">
+    <div class="section-title-row">
+        <h2>공개 질문과 답변</h2>
+        <span>큰들에서 오간 이야기</span>
+    </div>
+
+    {% if public_questions %}
+        {% for q in public_questions %}
+        <div class="question-card">
+            <p class="question-label">Q.</p>
+            <p class="question-content">{{ q.content }}</p>
+            <p class="answer-label">A.</p>
+            <p class="answer-content">{{ q.answer }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-card">
+            <p>아직 공개된 질문과 답변이 없습니다.</p>
+        </div>
+    {% endif %}
+</section>
+
+{% else %}
+
+<section class="feed-top">
+    <div class="welcome-card">
+        <div>
+            <p class="welcome-mini">경남과학고등학교 커뮤니티</p>
+            <h2>{{ current_user.username }}님, 큰들에 오신 걸 환영해요.</h2>
+            <p>오늘의 생각, 학교 생활, 궁금한 점을 자유롭게 남겨 보세요.</p>
+        </div>
+        <a href="{{ url_for('create_post') }}" class="primary-btn">글쓰기</a>
+    </div>
+</section>
+
+<section class="feed-layout">
+    <div class="main-feed">
+        <h2 class="section-heading">커뮤니티 피드</h2>
+
+        {% for post in posts %}
+        <div class="feed-card">
+            <div class="feed-header">
+                <div>
+                    <a href="{{ url_for('profile', username=post.author.username) }}" class="feed-user">
+                        {{ post.author.username }}
+                    </a>
+                    <p>{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                </div>
+            </div>
+
+            <div class="feed-body">
+                <p>{{ post.content }}</p>
+            </div>
+
+            <div class="feed-footer">
+                <a href="{{ url_for('like_post', post_id=post.id) }}">좋아요 {{ post.likes|length }}</a>
+
+                {% if post.author == current_user or current_user.is_admin %}
+                    <a href="{{ url_for('delete_post', post_id=post.id) }}">삭제</a>
+                {% endif %}
+            </div>
+
+            <div class="comment-area">
+                {% for comment in post.comments %}
+                    <div class="comment-item">
+                        <strong>{{ comment.author.username }}</strong>
+                        <span>{{ comment.content }}</span>
+                    </div>
+                {% endfor %}
+
+                <form method="POST" action="{{ url_for('add_comment', post_id=post.id) }}" class="comment-form">
+                    {{ comment_forms[post.id].hidden_tag() }}
+                    {{ comment_forms[post.id].content(class_="comment-input", placeholder="댓글을 입력하세요") }}
+                    {{ comment_forms[post.id].submit(class_="comment-btn") }}
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <aside class="side-panel">
+        <div class="side-card">
+            <h3>큰들 한마디</h3>
+            <p>
+                여기는 경남과학고등학교 학생들이 함께 만들어 가는 공간입니다.
+                예의 있게, 자유롭게, 솔직하게 이야기해 주세요.
+            </p>
+        </div>
+
+        <div class="side-card">
+            <h3>바로가기</h3>
+            <a href="{{ url_for('profile', username=current_user.username) }}">내 프로필</a>
+            <a href="{{ url_for('search') }}">회원 검색</a>
+            <a href="{{ url_for('inbox') }}">메시지함</a>
+        </div>
+    </aside>
+</section>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,33 @@
+project/
+│
+├─ app.py
+├─ models.py
+├─ forms.py
+├─ extensions.py
+├─ config.py
+├─ seed_admin.py
+├─ requirements.txt
+│
+├─ instance/
+│   └─ site.db   # 처음엔 없어도 됨. 실행하면 생성됨.
+│
+├─ static/
+│   ├─ style.css
+│   └─ uploads/
+│
+└─ templates/
+    ├─ base.html
+    ├─ index.html
+    ├─ login.html
+    ├─ register.html
+    ├─ create_post.html
+    ├─ profile.html
+    ├─ edit_profile.html
+    ├─ ask.html
+    ├─ inbox.html
+    ├─ chat.html
+    ├─ search.html
+    ├─ admin_dashboard.html
+    ├─ admin_users.html
+    ├─ admin_posts.html
+    └─ admin_questions.html

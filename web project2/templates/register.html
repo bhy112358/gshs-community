@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>회원가입</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>{{ form.username.label }}<br>{{ form.username() }}</p>
+    <p>{{ form.email.label }}<br>{{ form.email() }}</p>
+    <p>{{ form.student_id.label }}<br>{{ form.student_id() }}</p>
+    <p>{{ form.real_name.label }}<br>{{ form.real_name() }}</p>
+    <p>{{ form.school.label }}<br>{{ form.school() }}</p>
+    <p>{{ form.grade.label }}<br>{{ form.grade() }}</p>
+    <p>{{ form.password.label }}<br>{{ form.password() }}</p>
+    <p>{{ form.confirm_password.label }}<br>{{ form.confirm_password() }}</p>
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>프로필 수정</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>{{ form.bio.label }}<br>{{ form.bio(rows=4, cols=50) }}</p>
+    <p>{{ form.school.label }}<br>{{ form.school() }}</p>
+    <p>{{ form.grade.label }}<br>{{ form.grade() }}</p>
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

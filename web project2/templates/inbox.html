@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>메시지 목록</h2>
+
+{% for user in users %}
+<div class="card">
+    <p>{{ user.username }}</p>
+    <a href="{{ url_for('chat', username=user.username) }}">대화하기</a>
+</div>
+{% endfor %}
+{% endblock %}

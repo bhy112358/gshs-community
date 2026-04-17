@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+{% if mine %}
+    <h2>내가 받은 질문</h2>
+{% else %}
+    <h2>전체 질문 관리</h2>
+{% endif %}
+
+{% for q in questions %}
+<div class="card">
+    <p><strong>질문:</strong> {{ q.content }}</p>
+    <p><strong>답변:</strong> {{ q.answer or "아직 답변 없음" }}</p>
+
+    {% if mine and not q.answer %}
+        <a href="{{ url_for('answer_question', question_id=q.id) }}">답변하기</a>
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock %}

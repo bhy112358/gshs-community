@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>회원 관리</h2>
+
+{% for user in users %}
+<div class="card">
+    <p>{{ user.username }} / {{ user.email }}</p>
+    <p>{{ user.real_name }} / {{ user.school }} / {{ user.grade }}</p>
+    {% if not user.is_admin %}
+        <a href="{{ url_for('admin_delete_user', user_id=user.id) }}">삭제</a>
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock %}

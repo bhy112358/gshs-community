@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ other_user.username }}와의 대화</h2>
+
+<div class="card">
+    {% for msg in messages %}
+        <p>
+            <strong>
+                {% if msg.sender_id == current_user.id %}
+                    나
+                {% else %}
+                    {{ other_user.username }}
+                {% endif %}
+            </strong>
+            : {{ msg.content }}
+        </p>
+    {% endfor %}
+</div>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <p>{{ form.content(rows=4, cols=60) }}</p>
+    <p>{{ form.submit() }}</p>
+</form>
+{% endblock %}

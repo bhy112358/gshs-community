@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if answer_mode %}
+    <h2>답변 작성</h2>
+    <p><strong>질문:</strong> {{ question.content }}</p>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.answer.label }}<br>{{ form.answer(rows=5, cols=60) }}</p>
+        <p>{{ form.is_public() }} {{ form.is_public.label }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% else %}
+    <h2>{{ user.username }}에게 질문 보내기</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.content.label }}<br>{{ form.content(rows=5, cols=60) }}</p>
+        <p>{{ form.is_anonymous() }} {{ form.is_anonymous.label }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endif %}
+
+{% endblock %}

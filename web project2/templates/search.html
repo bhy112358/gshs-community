@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>회원 검색</h2>
+
+<form method="GET">
+    <input type="text" name="q" value="{{ q }}" placeholder="아이디, 이름, 학교 검색">
+    <button type="submit">검색</button>
+</form>
+
+<hr>
+
+{% for user in users %}
+<div class="card">
+    <p><strong>{{ user.username }}</strong> / {{ user.real_name }}</p>
+    <p>{{ user.school }} {{ user.grade }}</p>
+    <a href="{{ url_for('profile', username=user.username) }}">프로필 보기</a>
+    <a href="{{ url_for('chat', username=user.username) }}">메시지</a>
+</div>
+{% endfor %}
+{% endblock %}

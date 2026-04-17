@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>관리자 대시보드</h2>
+<p>회원 수: {{ user_count }}</p>
+<p>게시글 수: {{ post_count }}</p>
+<p>질문 수: {{ question_count }}</p>
+
+<a href="{{ url_for('admin_users') }}">회원 관리</a><br>
+<a href="{{ url_for('admin_posts') }}">게시글 관리</a><br>
+<a href="{{ url_for('admin_questions') }}">질문 관리</a>
+{% endblock %}
